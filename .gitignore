@@ -1,0 +1,19 @@
+# OpenClaw
+.openclaw/
+.clawhub/
+node_modules/
+
+# Sensitive
+prospects/
+credentials/
+*.env
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.log

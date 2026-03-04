@@ -1,0 +1,21 @@
+{
+  "board": "octavious-assist",
+  "name": "Octavious Assist Sales Campaign",
+  "created": "2026-03-02",
+  "tasks": [
+    {"id": "oa-001", "title": "Personalize email for Grant Thornton (Michael Kempe)", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-002", "title": "Personalize email for RSM (Troy Cardinal)", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-003", "title": "Personalize email for Brownstein Hyatt (Andrew Johnson)", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-004", "title": "Create email follow-up sequence #2-4", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-005", "title": "Research LinkedIn profiles for top 10 targets", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-006", "title": "Find mutual connections with targets", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-007", "title": "Create LinkedIn connection request templates", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-008", "title": "Research competitor ad strategies", "status": "todo", "priority": "medium", "subAgent": "ads", "dueDate": "2026-03-06"},
+    {"id": "oa-009", "title": "Create ad copy variants", "status": "todo", "priority": "medium", "subAgent": "ads", "dueDate": "2026-03-07"},
+    {"id": "oa-010", "title": "Design ad creative concepts", "status": "todo", "priority": "medium", "subAgent": "ads", "dueDate": "2026-03-08"},
+    {"id": "oa-011", "title": "Set up landing page framework", "status": "todo", "priority": "high", "subAgent": "ads", "dueDate": "2026-03-09"},
+    {"id": "oa-012", "title": "Finalize target company list", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-013", "title": "Research company AI initiatives", "status": "done", "completedDate": "2026-03-02"},
+    {"id": "oa-014", "title": "Build competitor comparison one-pager", "status": "todo", "priority": "medium", "subAgent": "general", "dueDate": "2026-03-06"}
+  ]
+}
