@@ -9,6 +9,7 @@ credentials/
 *.env
 *.pem
 *.key
+.mcp.json
 
 # OS
 .DS_Store
