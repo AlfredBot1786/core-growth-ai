@@ -209,22 +209,31 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 
 ## Model Selection (Cost Optimization)
 
+Configuration lives in `openclaw.config.json`. All models use Anthropic API with `cacheRetention: "short"` for prompt caching.
+
 Use the right model for the task:
 
-**Simple Tasks** → MiniMax (default, me)
+**Primary** → Sonnet 4.6 (`anthropic/claude-sonnet-4-6`)
+- Default model for most tasks
+- Research, drafting, multi-step workflows, coding, debugging
+- Good balance of capability and cost
+
+**Fallback** → Haiku 4.5 (`anthropic/claude-haiku-4-5`)
 - Quick questions, simple file reads, status checks, routine responses
+- Used when primary is unavailable or for lightweight tasks
 
-**Medium Tasks** → Haiku
-- Light research, drafting, summarization, multi-step but straightforward tasks
-
-**Complex Tasks** → Delegate to "complex" sub-agent (Sonnet-powered)
-- Architecture decisions, security analysis, complex debugging, multi-file refactoring
-- When you need deep reasoning or best-in-class coding
+**Heavy Tasks** → Opus 4.6 (`anthropic/claude-opus-4-6`)
+- Architecture decisions, security analysis, complex multi-file refactoring
+- Deep reasoning, thorough code reviews, critical decisions
 - Spawn with: `sessions_spawn` targeting agent "complex"
+
+### Cache Configuration
+
+All models are configured with `cacheRetention: "short"` to optimize API costs through prompt caching. This caches frequently-used context (workspace files, system prompts) to reduce token usage on repeated calls.
 
 ### How to Delegate to Complex Agent
 
-When a task requires Sonnet-level reasoning, use `sessions_spawn` to delegate:
+When a task requires Opus-level reasoning, use `sessions_spawn` to delegate:
 
 ```
 task: "The user's complex request here..."
@@ -234,9 +243,9 @@ mode: "run"
 
 Example triggers for delegation:
 - Security audits or vulnerability analysis
-- Multi-file architecture decisions  
+- Multi-file architecture decisions
 - Complex debugging across multiple components
-- When MiniMax produces poor output after one attempt
+- When Sonnet produces poor output after one attempt
 - User explicitly asks for "deep analysis" or "thorough review"
 
 After the complex agent responds, summarize the key points for the user in my voice.
