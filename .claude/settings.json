@@ -34,6 +34,11 @@
       "name": "outreach-connector",
       "description": "Message humanizer for sales outreach. Takes raw sales messages and makes them sound natural and conversational for LinkedIn, email, or voice. Enforces character limits and matches John's voice. Use when polishing any outreach message.",
       "path": "skills/outreach-connector/SKILL.md"
+    },
+    {
+      "name": "lead-scoring",
+      "description": "Scores LinkedIn prospects against Core Growth AI's ICP and generates personalized outreach assets (connection note, voice script, outreach angle). Give it a prospect's name, title, company, and any research data. Returns a score /100, tier (A/B/C), and ready-to-use messages.",
+      "path": "skills/lead-scoring/SKILL.md"
     }
   ]
 }
