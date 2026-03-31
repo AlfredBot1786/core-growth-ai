@@ -44,6 +44,11 @@
       "name": "prospect-research",
       "description": "Researches a LinkedIn prospect and their company for B2B outreach. Gathers company summary, recent news, funding status, challenges, person's professional focus, and recent posts. Use before lead-scoring to enrich prospect data.",
       "path": "skills/prospect-research/SKILL.md"
+    },
+    {
+      "name": "organize-desktop-screenshots",
+      "description": "Scans the Desktop for new screenshots, identifies what each one shows, renames them descriptively, and moves them to the Screenshots folder. Cowork only — requires macOS Desktop access.",
+      "path": "skills/organize-desktop-screenshots/SKILL.md"
     }
   ]
 }
