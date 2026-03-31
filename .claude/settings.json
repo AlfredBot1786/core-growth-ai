@@ -9,6 +9,31 @@
       "name": "self-improvement",
       "description": "Captures learnings, errors, and corrections to enable continuous improvement. Use when: (1) A command or operation fails unexpectedly, (2) User corrects Claude, (3) User requests a capability that doesn't exist, (4) An external API or tool fails, (5) Claude realizes its knowledge is outdated or incorrect, (6) A better approach is discovered for a recurring task.",
       "path": "skills/self-improving-agent/SKILL.md"
+    },
+    {
+      "name": "sales-discovery",
+      "description": "Josh Braun-style sales discovery. Generates pre-call briefs, 5-layer discovery questions, objection inoculation, and post-call debriefs for Core Growth AI prospects. Use when preparing for or debriefing a sales call.",
+      "path": "skills/sales-discovery/SKILL.md"
+    },
+    {
+      "name": "sales-closing",
+      "description": "Challenger Sale closing methodology. Builds commercial teaching pitches, stakeholder maps, cost-of-inaction calculators, proposals, and late-stage objection handling for Core Growth AI deals. Use when moving a deal toward close.",
+      "path": "skills/sales-closing/SKILL.md"
+    },
+    {
+      "name": "sales-followup",
+      "description": "Jeb Blount Fanatical Prospecting follow-up system. Builds multi-channel cadences, writes follow-up emails, and manages post-connection, post-discovery, and post-proposal sequences. Use when following up with a prospect at any stage.",
+      "path": "skills/sales-followup/SKILL.md"
+    },
+    {
+      "name": "sales-reactivation",
+      "description": "Chet Holmes Dream 100 reactivation strategy. Scores dormant leads, builds 8-week reactivation sequences, and manages win-back campaigns for lost deals. Use when re-engaging cold or dormant prospects.",
+      "path": "skills/sales-reactivation/SKILL.md"
+    },
+    {
+      "name": "outreach-connector",
+      "description": "Message humanizer for sales outreach. Takes raw sales messages and makes them sound natural and conversational for LinkedIn, email, or voice. Enforces character limits and matches John's voice. Use when polishing any outreach message.",
+      "path": "skills/outreach-connector/SKILL.md"
     }
   ]
 }
