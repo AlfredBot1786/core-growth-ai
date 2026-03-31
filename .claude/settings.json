@@ -39,6 +39,11 @@
       "name": "lead-scoring",
       "description": "Scores LinkedIn prospects against Core Growth AI's ICP and generates personalized outreach assets (connection note, voice script, outreach angle). Give it a prospect's name, title, company, and any research data. Returns a score /100, tier (A/B/C), and ready-to-use messages.",
       "path": "skills/lead-scoring/SKILL.md"
+    },
+    {
+      "name": "prospect-research",
+      "description": "Researches a LinkedIn prospect and their company for B2B outreach. Gathers company summary, recent news, funding status, challenges, person's professional focus, and recent posts. Use before lead-scoring to enrich prospect data.",
+      "path": "skills/prospect-research/SKILL.md"
     }
   ]
 }
