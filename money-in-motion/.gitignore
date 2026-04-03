@@ -1,0 +1,27 @@
+# Environment
+config/.env
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Cache
+.cache/
+*.json.cache
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Credentials (never commit these)
+*.key
+*.pem
+credentials.*
