@@ -1,0 +1,26 @@
+iteration	dimension	classification	severity	title	description	parent
+1	happy_path	new	-	Full Pipeline Success	Complete detect→dedup→enrich→score→route→alert flow with 47 filings	-
+2	error_path	new	HIGH	SEC EDGAR API Unreachable	EDGAR downtime kills pipeline run, no retry logic, silent failure	-
+3	integration	new	HIGH	Apollo API Credits Exhausted	Enrichment fails silently, scoring quality degrades without alerting	-
+4	edge_case	new	MEDIUM	Malformed Form 4 XML	Non-standard XML kills batch processing if exception not per-filing	-
+5	temporal	new	MEDIUM	Lookback Window Overlap	24h lookback with 4h runs creates 20h overlap, inflated counts	-
+6	scale	new	CRITICAL	Burst of 500+ Filings	Earnings season spike exhausts API credits, causes alert fatigue	-
+7	concurrent	new	CRITICAL	Two Pipeline Runs Simultaneously	No locking, double-scoring, duplicate alerts, race conditions	-
+8	data_variation	new	LOW	Unicode/Special Characters in Names	Encoding issues across XML parser, Apollo, emails, Supabase	-
+9	recovery	new	CRITICAL	Pipeline Crashes Mid-Scoring	Partial writes, orphaned events, sunk API costs, no resume	-
+10	state_transition	new	HIGH	Lead Outreach Lifecycle Gaps	No SBL.so→Supabase integration, re-alerting, no ROI tracking	-
+11	abuse	new	CRITICAL	Unauthenticated Webhook Endpoint	FastAPI /run exposed without auth, PII in response, credit drain	-
+12	permission	new	HIGH	API Key Exposure in .env	config/.env path may not match .gitignore, service role key risk	-
+13	integration	new	HIGH	Apify Actor Run Hangs	No timeout on poll loop, blocks entire pipeline, process accumulation	-
+14	edge_case+temporal	new	HIGH	Filing Amendment Supersedes Original	Form 4/A not linked to original, conflicting alerts, wrong talking points	-
+15	data_variation	new	HIGH	8-K With No Extractable Data	Image-only PDF, Claude hallucinates details, fabricated talking points	-
+16	temporal+scale	new	HIGH	Quarterly Earnings Season Overwhelm	1200 leads/day, no cost caps, alert fatigue, API budget blown	-
+17	recovery+state	new	CRITICAL	Supabase Write Fails After Scoring	Sunk API costs, no local cache, next run re-scores everything	-
+18	abuse+permission	new	MEDIUM	SMTP Credentials Used for Spam	Gmail compromise, silent alert failure, no monitoring	-
+19	concurrent+integration	new	HIGH	Cross-Detector Correlation Missing	Same person from 8-K + Form 4 appears as two leads, split context	-
+20	edge_case	new	MEDIUM	EDGAR EFTS Stale/Cached Results	Indexing lag, tight lookback windows miss filings permanently	-
+21	scale+recovery	new	CRITICAL	Enrichment Waterfall Cascade Failure	Both providers down, silent quality drop, leads never re-scored	-
+22	temporal+data	new	MEDIUM	Timezone Mismatch in Lookback	UTC vs ET boundaries, weekend filing accumulation	-
+23	abuse+scale	new	HIGH	Prompt Injection via SEC Filing	Attacker crafts filing text to manipulate Claude scoring	-
+24	integration+permission	new	CRITICAL	Supabase Service Role Key = Full Access	Key leak exposes all PII, no RLS, GDPR/CCPA implications	-
+25	recovery+concurrent	new	HIGH	n8n Webhook Retry Storm	500 error triggers retry cascade, 3+ concurrent runs, triplicate alerts	-
