@@ -1,7 +1,7 @@
 """Tests for core data models."""
 
 import pytest
-from src.models import Event, EventType, ScoredLead, Tier, CostTracker, EnrichmentData, EnrichmentStatus
+from src.models import Event, EventType, ScoredLead, Tier, CostTracker
 
 
 class TestEvent:
@@ -18,7 +18,7 @@ class TestEvent:
         assert event.event_type == EventType.SEC_FORM4
         assert event.person_name == ""
         assert event.raw_data == {}
-        assert event.event_id  # should be auto-generated
+        assert event.event_id
 
 
 class TestScoredLead:
@@ -45,17 +45,12 @@ class TestScoredLead:
 class TestCostTracker:
     def test_budget_check_ok(self):
         tracker = CostTracker(claude_calls=5)
-        assert tracker.check_budget(200, 500) is None
+        assert tracker.check_budget(200) is None
 
-    def test_budget_check_claude_exceeded(self):
+    def test_budget_check_exceeded(self):
         tracker = CostTracker(claude_calls=200)
-        result = tracker.check_budget(200, 500)
+        result = tracker.check_budget(200)
         assert "Claude call budget exceeded" in result
-
-    def test_budget_check_enrichment_exceeded(self):
-        tracker = CostTracker(apollo_calls=300, prospeo_calls=200)
-        result = tracker.check_budget(200, 500)
-        assert "Enrichment call budget exceeded" in result
 
     def test_cost_estimation(self):
         tracker = CostTracker(claude_tokens=10000)

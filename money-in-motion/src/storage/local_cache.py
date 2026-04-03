@@ -1,14 +1,9 @@
-"""Local file cache for resilience when Supabase is down.
-
-Scenario fix #9, #17: caches scored leads locally before Supabase write,
-so data isn't lost if the database is unavailable.
-"""
+"""Local file cache for resilience when Supabase is down."""
 
 from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, timezone
 from pathlib import Path
 
 from src.models import ScoredLead
@@ -18,14 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 class LocalCache:
-    """File-based cache for scored leads and pipeline state."""
+    """File-based cache for scored leads."""
 
     def __init__(self, cache_dir: str | None = None):
         self.cache_dir = Path(cache_dir or settings.local_cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def cache_scored_leads(self, leads: list[ScoredLead], run_id: str) -> bool:
-        """Cache scored leads to local JSON file before Supabase write."""
         if not leads:
             return True
 
@@ -43,10 +37,6 @@ class LocalCache:
                     "tier": lead.tier.value,
                     "situation_brief": lead.situation_brief,
                     "talking_points": lead.talking_points,
-                    "email": lead.enrichment.email,
-                    "phone": lead.enrichment.phone,
-                    "linkedin_url": lead.enrichment.linkedin_url,
-                    "enrichment_status": lead.enrichment.status.value,
                     "scored_at": lead.scored_at.isoformat(),
                 })
 
@@ -58,7 +48,6 @@ class LocalCache:
             return False
 
     def get_pending_leads(self) -> list[dict]:
-        """Retrieve cached leads that haven't been written to Supabase yet."""
         pending = []
         for cache_file in self.cache_dir.glob("scored_leads_*.json"):
             try:
@@ -69,8 +58,6 @@ class LocalCache:
         return pending
 
     def mark_synced(self, run_id: str) -> None:
-        """Remove cache file after successful Supabase sync."""
         cache_file = self.cache_dir / f"scored_leads_{run_id}.json"
         if cache_file.exists():
             cache_file.unlink()
-            logger.debug(f"Cleared cache for run {run_id}")

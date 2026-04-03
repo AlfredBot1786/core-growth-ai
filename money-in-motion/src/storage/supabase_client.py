@@ -1,13 +1,8 @@
-"""Supabase storage client with error handling.
-
-Scenario fix #17: handles Supabase failures without losing scored data.
-Scenario fix #24: uses anon key + RLS by default.
-"""
+"""Supabase storage client."""
 
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
 
 from supabase import create_client, Client
 
@@ -33,10 +28,8 @@ class SupabaseStorage:
         return self.client is not None
 
     def get_known_source_ids(self) -> set[str]:
-        """Fetch all existing source IDs for deduplication."""
         if not self.is_available:
             return set()
-
         try:
             result = self.client.table("events").select("source_id, event_type").execute()
             return {f"{row['event_type']}:{row['source_id']}" for row in result.data}
@@ -45,7 +38,6 @@ class SupabaseStorage:
             return set()
 
     def insert_events(self, events: list[Event]) -> int:
-        """Insert events into Supabase. Returns count of successfully inserted."""
         if not self.is_available or not events:
             return 0
 
@@ -67,11 +59,9 @@ class SupabaseStorage:
             except Exception as e:
                 logger.warning(f"Failed to insert event {event.event_id}: {e}")
                 continue
-
         return inserted
 
     def insert_scored_leads(self, leads: list[ScoredLead]) -> int:
-        """Insert scored leads. Returns count successfully inserted."""
         if not self.is_available or not leads:
             return 0
 
@@ -85,12 +75,6 @@ class SupabaseStorage:
                     "tier": lead.tier.value,
                     "situation_brief": lead.situation_brief,
                     "talking_points": lead.talking_points,
-                    "email": lead.enrichment.email,
-                    "phone": lead.enrichment.phone,
-                    "linkedin_url": lead.enrichment.linkedin_url,
-                    "job_title": lead.enrichment.job_title,
-                    "enrichment_status": lead.enrichment.status.value,
-                    "enrichment_provider": lead.enrichment.provider,
                     "outreach_status": lead.outreach_status.value,
                     "scored_at": lead.scored_at.isoformat(),
                 }).execute()
@@ -98,14 +82,11 @@ class SupabaseStorage:
             except Exception as e:
                 logger.warning(f"Failed to insert scored lead {lead.lead_id}: {e}")
                 continue
-
         return inserted
 
     def insert_pipeline_run(self, run: PipelineRun) -> bool:
-        """Insert or update a pipeline run record."""
         if not self.is_available:
             return False
-
         try:
             self.client.table("pipeline_runs").upsert({
                 "run_id": run.run_id,
@@ -119,7 +100,6 @@ class SupabaseStorage:
                 "t3_count": run.t3_count,
                 "alerts_sent": run.alerts_sent,
                 "errors": run.errors,
-                "enrichment_failures": run.enrichment_failures,
                 "scoring_failures": run.scoring_failures,
                 "api_cost_estimate": run.api_cost_estimate,
             }).execute()

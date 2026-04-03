@@ -17,24 +17,18 @@ class EventType(str, Enum):
 
 
 class Tier(str, Enum):
-    T1 = "T1"  # Score 70+, immediate alert
-    T2 = "T2"  # Score 40-69, email sequence
+    T1 = "T1"  # Score 70+, immediate alert + LinkedIn outreach
+    T2 = "T2"  # Score 40-69, added to lead list for advisor teams
     T3 = "T3"  # Score <40, stored only
 
 
 class OutreachStatus(str, Enum):
     PENDING = "pending"
-    SENT = "sent"
+    CONTACT_FOUND = "contact_found"  # enrichment done post-scoring
+    LINKEDIN_SENT = "linkedin_sent"
     RESPONDED = "responded"
     MEETING_BOOKED = "meeting_booked"
     DECLINED = "declined"
-
-
-class EnrichmentStatus(str, Enum):
-    NOT_ATTEMPTED = "not_attempted"
-    SUCCESS = "success"
-    PARTIAL = "partial"
-    FAILED = "failed"
 
 
 @dataclass
@@ -58,26 +52,11 @@ class Event:
 
 
 @dataclass
-class EnrichmentData:
-    """Contact enrichment data from Apollo/Prospeo."""
-
-    email: str = ""
-    phone: str = ""
-    linkedin_url: str = ""
-    job_title: str = ""
-    company_size: str = ""
-    location: str = ""
-    provider: str = ""  # which provider returned this data
-    status: EnrichmentStatus = EnrichmentStatus.NOT_ATTEMPTED
-
-
-@dataclass
 class ScoredLead:
-    """A scored and enriched lead ready for routing."""
+    """A scored lead ready for routing."""
 
     lead_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     event: Event = field(default_factory=Event)
-    enrichment: EnrichmentData = field(default_factory=EnrichmentData)
     score: int = 0
     tier: Tier = Tier.T3
     situation_brief: str = ""
@@ -109,7 +88,6 @@ class PipelineRun:
     t3_count: int = 0
     alerts_sent: int = 0
     errors: list[str] = field(default_factory=list)
-    enrichment_failures: int = 0
     scoring_failures: int = 0
     api_cost_estimate: float = 0.0
 
@@ -120,8 +98,6 @@ class CostTracker:
 
     claude_calls: int = 0
     claude_tokens: int = 0
-    apollo_calls: int = 0
-    prospeo_calls: int = 0
     smtp_sends: int = 0
 
     @property
@@ -133,11 +109,8 @@ class CostTracker:
     def estimated_total(self) -> float:
         return self.estimated_claude_cost
 
-    def check_budget(self, max_claude_calls: int, max_enrichment_calls: int) -> str | None:
+    def check_budget(self, max_claude_calls: int) -> str | None:
         """Returns error message if budget exceeded, None if OK."""
         if self.claude_calls >= max_claude_calls:
             return f"Claude call budget exceeded: {self.claude_calls}/{max_claude_calls}"
-        if (self.apollo_calls + self.prospeo_calls) >= max_enrichment_calls:
-            total = self.apollo_calls + self.prospeo_calls
-            return f"Enrichment call budget exceeded: {total}/{max_enrichment_calls}"
         return None

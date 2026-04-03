@@ -2,7 +2,7 @@
 
 import pytest
 from src.scoring.prompts import get_prompt_for_event, _sanitize
-from src.models import Event, EventType, EnrichmentData, EnrichmentStatus
+from src.models import Event, EventType
 
 
 class TestPromptSanitization:
@@ -32,8 +32,7 @@ class TestPromptGeneration:
             company_name="TechCorp",
             raw_data={"transaction_type": "S", "shares": 5000, "price_per_share": 142.30, "total_value": 711500},
         )
-        enrichment = EnrichmentData(job_title="CEO", status=EnrichmentStatus.SUCCESS)
-        prompt = get_prompt_for_event(event, enrichment)
+        prompt = get_prompt_for_event(event)
         assert "Jane CEO" in prompt
         assert "TechCorp" in prompt
         assert "Sale" in prompt
@@ -45,11 +44,10 @@ class TestPromptGeneration:
             company_name="BigBank",
             raw_data={"signal_type": "executive_departure", "item_code": "5.02"},
         )
-        enrichment = EnrichmentData()
-        prompt = get_prompt_for_event(event, enrichment)
+        prompt = get_prompt_for_event(event)
         assert "BigBank" in prompt
         assert "Not extracted" in prompt
-        assert "Do NOT infer or fabricate" in prompt
+        assert "Do NOT fabricate" in prompt
 
     def test_warn_act_prompt(self):
         event = Event(
@@ -57,8 +55,7 @@ class TestPromptGeneration:
             company_name="ManufactureCo",
             raw_data={"affected_employees": 500, "state": "CA"},
         )
-        enrichment = EnrichmentData()
-        prompt = get_prompt_for_event(event, enrichment)
+        prompt = get_prompt_for_event(event)
         assert "ManufactureCo" in prompt
         assert "500" in prompt
 
@@ -67,10 +64,8 @@ class TestPromptGeneration:
             event_type=EventType.LINKEDIN,
             person_name="Bob VP",
             company_name="startup-inc",
-            raw_data={"job_title": "VP Engineering", "linkedin_url": "https://linkedin.com/in/bob"},
+            raw_data={"job_title": "VP Engineering"},
         )
-        enrichment = EnrichmentData(email="bob@example.com", status=EnrichmentStatus.SUCCESS)
-        prompt = get_prompt_for_event(event, enrichment)
+        prompt = get_prompt_for_event(event)
         assert "Bob VP" in prompt
         assert "VP Engineering" in prompt
-        assert "bob@example.com" in prompt
